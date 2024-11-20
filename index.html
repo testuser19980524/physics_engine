@@ -58,40 +58,32 @@ const gravityInput = document.querySelector('.gravity-input');
 const restitutionInput = document.querySelector('.restitution-input');
 
 document.addEventListener('click', function(event) {
-  // 部屋の範囲内をクリックしたときのみ丸を作成
-  if (event.target.classList.contains('room') || event.target === room) {
-    const circle = document.createElement('div');
-    circle.classList.add('circle');
-    circle.style.left = (event.clientX - 25) + 'px';
-    circle.style.top = (event.clientY - 25) + 'px';
-    document.body.appendChild(circle);
+  const circle = document.createElement('div');
+  circle.classList.add('circle');
+  circle.style.left = (event.clientX - 25) + 'px';
+  circle.style.top = (event.clientY - 25) + 'px';
+  document.body.appendChild(circle);
 
-    // 丸の動きを開始
-    let v0 = 0; // 初速度
-    let g = parseFloat(gravityInput.value) || 9.8; // 重力加速度
-    let e = parseFloat(restitutionInput.value) || 0.7; // 反発係数
-    let t = 0; // 時間
-    let v = 0; // 速度
-    let intervalId = setInterval(() => {
-      t += 0.01; // 時間を進める
-      v = v0 + g * t; // 速度を計算
-      circle.style.top = (parseInt(circle.style.top) + v * 0.01) + 'px'; // 丸の位置を更新
+  // 丸の動きを開始
+  let v0 = 0; // 初速度
+  let g = parseFloat(gravityInput.value) || 9.8; // 重力加速度
+  let e = parseFloat(restitutionInput.value) || 0.7; // 反発係数
+  let t = 0; // 時間
+  let v = 0; // 速度
+  let intervalId = setInterval(() => {
+    t += 0.01; // 時間を進める
+    v = v0 + g * t; // 速度を計算
+    circle.style.top = (parseInt(circle.style.top) + v * 0.01) + 'px'; // 丸の位置を更新
 
-      // 左右の壁との当たり判定
-      let left = parseInt(circle.style.left);
-      if (left < room.offsetLeft || left + circle.offsetWidth > room.offsetLeft + room.offsetWidth) {
-        v0 = -v0 * e; // 反発
-        t = 0; // 時間をリセット
-      }
-
-      // 上下の壁との当たり判定
-      let top = parseInt(circle.style.top);
-      if (top <= room.offsetTop || top + circle.offsetHeight >= room.offsetTop + room.offsetHeight) {
-        v = -v * e; // 反発
-        t = 0; // 時間をリセット
-      }
-    }, 10); // 10ミリ秒ごとに更新
-  }
+    // 部屋との当たり判定
+    let left = parseInt(circle.style.left);
+    let top = parseInt(circle.style.top);
+    if (left < room.offsetLeft || left + circle.offsetWidth > room.offsetLeft + room.offsetWidth ||
+        top <= room.offsetTop || top + circle.offsetHeight >= room.offsetTop + room.offsetHeight) {
+      v0 = -v0 * e; // 反発
+      t = 0; // 時間をリセット
+    }
+  }, 10); // 10ミリ秒ごとに更新
 });
 </script>
 </body>
