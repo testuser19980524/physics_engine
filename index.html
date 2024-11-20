@@ -14,7 +14,7 @@ body {
   border: 3px solid white;
   position: absolute;
   top: 50%;
-  left: 10%; /* 左に 10% ずらす */
+  left: 10%;
   transform: translate(-50%, -50%);
 }
 
@@ -45,11 +45,14 @@ body {
 <input type="text" class="gravity-input" placeholder="重力加速度">
 <script>
 document.addEventListener('click', function(event) {
-  const circle = document.createElement('div');
-  circle.classList.add('circle');
-  circle.style.left = (event.clientX - 25) + 'px';
-  circle.style.top = (event.clientY - 25) + 'px';
-  document.body.appendChild(circle);
+  // 部屋の範囲内をクリックしたときのみ丸を作成
+  if (event.target.classList.contains('room') || event.target === document.querySelector('.room')) {
+    const circle = document.createElement('div');
+    circle.classList.add('circle');
+    circle.style.left = (event.clientX - 25) + 'px';
+    circle.style.top = (event.clientY - 25) + 'px';
+    document.body.appendChild(circle);
+  }
 });
 </script>
 </body>
