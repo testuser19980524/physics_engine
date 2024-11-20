@@ -14,7 +14,7 @@ body {
   border: 3px solid white;
   position: absolute;
   top: 50%;
-  left: 40%; /* 左に 20% ずらす */
+  left: 20%;
   transform: translate(-50%, -50%);
 }
 
@@ -44,14 +44,30 @@ body {
 <div class="room"></div>
 <input type="text" class="gravity-input" placeholder="重力加速度">
 <script>
+const room = document.querySelector('.room');
+const gravityInput = document.querySelector('.gravity-input');
+
 document.addEventListener('click', function(event) {
   // 部屋の範囲内をクリックしたときのみ丸を作成
-  if (event.target.classList.contains('room') || event.target === document.querySelector('.room')) {
+  if (event.target.classList.contains('room') || event.target === room) {
     const circle = document.createElement('div');
     circle.classList.add('circle');
     circle.style.left = (event.clientX - 25) + 'px';
     circle.style.top = (event.clientY - 25) + 'px';
     document.body.appendChild(circle);
+
+    // 丸の動きを開始
+    let v0 = 0; // 初速度
+    let g = parseFloat(gravityInput.value) || 9.8; // 重力加速度
+    let t = 0; // 時間
+    let intervalId = setInterval(() => {
+      t += 0.05; // 時間を進める
+      let v = v0 + g * t; // 速度を計算
+      circle.style.top = (parseInt(circle.style.top) + v) + 'px'; // 丸の位置を更新
+      if (parseInt(circle.style.top) > room.offsetTop + room.offsetHeight) {
+        clearInterval(intervalId); // 部屋の外に出たら動きを停止
+      }
+    }, 50); // 50ミリ秒ごとに更新
   }
 });
 </script>
