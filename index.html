@@ -75,7 +75,7 @@ document.addEventListener('click', function(event) {
     let intervalId = setInterval(() => {
       t += 0.01; // 時間を進める
       v = v0 + g * t; // 速度を計算
-      circle.style.top = (parseInt(circle.style.top) + v) + 'px'; // 丸の位置を更新
+      circle.style.top = (parseInt(circle.style.top) + v * 0.01) + 'px'; // 丸の位置を更新
 
       // 左右の壁との当たり判定
       let left = parseInt(circle.style.left);
