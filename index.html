@@ -91,11 +91,6 @@ document.addEventListener('click', function(event) {
         v0 = v; // 反発後の速度を初速度に設定
         t = 0; // 時間をリセット
       }
-
-      // 部屋の外に出たら動きを停止
-      if (top > room.offsetTop + room.offsetHeight) {
-        clearInterval(intervalId);
-      }
     }, 10); // 10ミリ秒ごとに更新
   }
 });
