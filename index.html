@@ -5,7 +5,7 @@
 body {
   background-color: black;
   margin: 0;
-  overflow: hidden; /* 画面から丸がはみ出ないように */
+  overflow: hidden;
 }
 
 .circle {
@@ -15,7 +15,7 @@ body {
   background-color: black;
   border: 3px solid white;
   position: absolute;
-  pointer-events: none; /* クリックしても丸を消さないように */
+  pointer-events: none;
 }
 </style>
 </head>
@@ -24,8 +24,8 @@ body {
 document.addEventListener('click', function(event) {
   const circle = document.createElement('div');
   circle.classList.add('circle');
-  circle.style.left = event.clientX + 'px';
-  circle.style.top = event.clientY + 'px';
+  circle.style.left = event.clientX + '-3px';
+  circle.style.top = event.clientY + '3px';
   document.body.appendChild(circle);
 });
 </script>
