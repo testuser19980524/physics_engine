@@ -43,7 +43,7 @@ body {
 }
 
 .restitution-input {
-  top: 40px; /* 重力加速度のテキストボックスの下に配置 */
+  top: 40px;
   right: 10px;
 }
 </style>
@@ -76,13 +76,25 @@ document.addEventListener('click', function(event) {
       t += 0.01; // 時間を進める
       v = v0 + g * t; // 速度を計算
       circle.style.top = (parseInt(circle.style.top) + v) + 'px'; // 丸の位置を更新
-      if (parseInt(circle.style.top) > room.offsetTop + room.offsetHeight) {
+
+      // 左右の壁との当たり判定
+      let left = parseInt(circle.style.left);
+      if (left < room.offsetLeft || left + circle.offsetWidth > room.offsetLeft + room.offsetWidth) {
+        v0 = -v0 * e; // 反発
+        t = 0; // 時間をリセット
+      }
+
+      // 上下の壁との当たり判定
+      let top = parseInt(circle.style.top);
+      if (top < room.offsetTop || top + circle.offsetHeight > room.offsetTop + room.offsetHeight) {
         v = -v * e; // 反発
         v0 = v; // 反発後の速度を初速度に設定
         t = 0; // 時間をリセット
       }
-      if (parseInt(circle.style.top) > room.offsetTop + room.offsetHeight) {
-        clearInterval(intervalId); // 部屋の外に出たら動きを停止
+
+      // 部屋の外に出たら動きを停止
+      if (top > room.offsetTop + room.offsetHeight) {
+        clearInterval(intervalId);
       }
     }, 10); // 10ミリ秒ごとに更新
   }
