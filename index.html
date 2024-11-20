@@ -14,7 +14,7 @@ body {
   border: 3px solid white;
   position: absolute;
   top: 50%;
-  left: 20%;
+  left: 37%;
   transform: translate(-50%, -50%);
 }
 
@@ -61,13 +61,13 @@ document.addEventListener('click', function(event) {
     let g = parseFloat(gravityInput.value) || 9.8; // 重力加速度
     let t = 0; // 時間
     let intervalId = setInterval(() => {
-      t += 0.05; // 時間を進める
+      t += 0.01; // 時間を進める
       let v = v0 + g * t; // 速度を計算
       circle.style.top = (parseInt(circle.style.top) + v) + 'px'; // 丸の位置を更新
       if (parseInt(circle.style.top) > room.offsetTop + room.offsetHeight) {
         clearInterval(intervalId); // 部屋の外に出たら動きを停止
       }
-    }, 50); // 50ミリ秒ごとに更新
+    }, 10); // 10ミリ秒ごとに更新
   }
 });
 </script>
