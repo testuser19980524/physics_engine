@@ -24,8 +24,8 @@ body {
 document.addEventListener('click', function(event) {
   const circle = document.createElement('div');
   circle.classList.add('circle');
-  circle.style.left = event.clientX + '-3px';
-  circle.style.top = event.clientY + '3px';
+  circle.style.left = (event.clientX - 25) + 'px'; // 丸の中心をクリック位置に合わせる
+  circle.style.top = (event.clientY - 25) + 'px'; // 丸の中心をクリック位置に合わせる
   document.body.appendChild(circle);
 });
 </script>
