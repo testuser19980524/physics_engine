@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  background-color: black;
+  margin: 0;
+  overflow: hidden; /* 画面から丸がはみ出ないように */
+}
+
+.circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: black;
+  border: 3px solid white;
+  position: absolute;
+  pointer-events: none; /* クリックしても丸を消さないように */
+}
+</style>
+</head>
+<body>
+<script>
+document.addEventListener('click', function(event) {
+  const circle = document.createElement('div');
+  circle.classList.add('circle');
+  circle.style.left = event.clientX + 'px';
+  circle.style.top = event.clientY + 'px';
+  document.body.appendChild(circle);
+});
+</script>
+</body>
+</html>
