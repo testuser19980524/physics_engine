@@ -28,24 +28,34 @@ body {
   pointer-events: none;
 }
 
-.gravity-input {
+.gravity-input, .restitution-input {
   position: absolute;
-  top: 10px;
-  right: 10px;
   color: white;
   background-color: transparent;
   border: 2px solid white;
   padding: 5px 10px;
   font-size: 16px;
 }
+
+.gravity-input {
+  top: 10px;
+  right: 10px;
+}
+
+.restitution-input {
+  top: 40px; /* 重力加速度のテキストボックスの下に配置 */
+  right: 10px;
+}
 </style>
 </head>
 <body>
 <div class="room"></div>
 <input type="text" class="gravity-input" placeholder="重力加速度">
+<input type="text" class="restitution-input" placeholder="反発係数">
 <script>
 const room = document.querySelector('.room');
 const gravityInput = document.querySelector('.gravity-input');
+const restitutionInput = document.querySelector('.restitution-input');
 
 document.addEventListener('click', function(event) {
   // 部屋の範囲内をクリックしたときのみ丸を作成
@@ -59,11 +69,18 @@ document.addEventListener('click', function(event) {
     // 丸の動きを開始
     let v0 = 0; // 初速度
     let g = parseFloat(gravityInput.value) || 9.8; // 重力加速度
+    let e = parseFloat(restitutionInput.value) || 0.7; // 反発係数
     let t = 0; // 時間
+    let v = 0; // 速度
     let intervalId = setInterval(() => {
       t += 0.01; // 時間を進める
-      let v = v0 + g * t; // 速度を計算
+      v = v0 + g * t; // 速度を計算
       circle.style.top = (parseInt(circle.style.top) + v) + 'px'; // 丸の位置を更新
+      if (parseInt(circle.style.top) > room.offsetTop + room.offsetHeight) {
+        v = -v * e; // 反発
+        v0 = v; // 反発後の速度を初速度に設定
+        t = 0; // 時間をリセット
+      }
       if (parseInt(circle.style.top) > room.offsetTop + room.offsetHeight) {
         clearInterval(intervalId); // 部屋の外に出たら動きを停止
       }
