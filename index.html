@@ -86,7 +86,7 @@ document.addEventListener('click', function(event) {
 
       // 上下の壁との当たり判定
       let top = parseInt(circle.style.top);
-      if (top < room.offsetTop || top + circle.offsetHeight > room.offsetTop + room.offsetHeight) {
+      if (top <= room.offsetTop || top + circle.offsetHeight >= room.offsetTop + room.offsetHeight) {
         v = -v * e; // 反発
         v0 = v; // 反発後の速度を初速度に設定
         t = 0; // 時間をリセット
