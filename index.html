@@ -49,48 +49,44 @@ const gravityInput = document.querySelector('.gravity-input');
 const circles = [];
 
 document.addEventListener('click', function(event) {
-  // 部屋の範囲内をクリックしたときのみ丸を作成
   if (event.target.classList.contains('room') || event.target === room) {
     const circle = document.createElement('div');
     circle.classList.add('circle');
     circle.style.left = (event.clientX - 25) + 'px';
     circle.style.top = (event.clientY - 25) + 'px';
-    circle.dataset.vx = 0; // x方向の速度を追加
-    circle.dataset.vy = 0; // y方向の速度を追加
+    circle.dataset.vx = 0; 
+    circle.dataset.vy = 0; 
     document.body.appendChild(circle);
-    circles.push(circle);
-
-    // 丸の動きを開始
-    let g = parseFloat(gravityInput.value) || 9.8; // 重力加速度
+    circles.push(circle)
+    
+    let g = parseFloat(gravityInput.value) || 9.8; 
     let intervalId = setInterval(() => {
       updateCircle(circle,g);
-    }, 10); // 10ミリ秒ごとに更新
+    }, 10); 
   }
 });
 
 function updateCircle(circle, g) {
     let vx = parseFloat(circle.dataset.vx);
     let vy = parseFloat(circle.dataset.vy);
-    vy += g * 0.01; // 速度を更新
+    vy += g * 0.01; 
 
     let newTop = parseFloat(circle.style.top) + vy;
     let newLeft = parseFloat(circle.style.left) + vx;
 
     const roomRect = room.getBoundingClientRect();
-    const friction = 0.99; //摩擦係数 (0～1の間)
+    const friction = 0.99; 
 
-    // 天井との当たり判定
     if (newTop < roomRect.top + 3) {
         newTop = roomRect.top + 3;
         vy = -vy * 0.8;
     }
-    // 床との当たり判定
     if (newTop > roomRect.bottom - 50) {
         newTop = roomRect.bottom - 50;
-        vy = -vy * 0.8 * friction; //摩擦を適用
-        vx *= friction; //摩擦を適用
+        vy = -vy * 0.8 * friction; 
+        vx *= friction; 
     }
-    // 壁との当たり判定
+  
     if (newLeft < roomRect.left + 3 || newLeft > roomRect.right - 53) {
         newLeft = Math.max(roomRect.left + 3, Math.min(newLeft, roomRect.right - 53));
         vx = -vx * 0.8;
@@ -117,22 +113,19 @@ function collisionDetection(circle1, circle2) {
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     if (distance < rect1.width) {
-        //衝突処理: 速度の交換に加え、衝突方向を考慮した速度調整を行う
         const vx1 = parseFloat(circle1.dataset.vx);
         const vy1 = parseFloat(circle1.dataset.vy);
         const vx2 = parseFloat(circle2.dataset.vx);
         const vy2 = parseFloat(circle2.dataset.vy);
 
-        // 衝突角度を考慮した速度の変更
         const angle = Math.atan2(dy, dx);
         const speed1 = Math.sqrt(vx1 * vx1 + vy1 * vy1);
         const speed2 = Math.sqrt(vx2 * vx2 + vy2 * vy2);
 
         circle1.dataset.vx = speed2 * Math.cos(angle);
         circle1.dataset.vy = speed2 * Math.sin(angle);
-        circle2.dataset.vx = speed1 * Math.cos(angle + Math.PI); // 180度反転
-        circle2.dataset.vy = speed1 * Math.sin(angle + Math.PI); // 180度反転
-
+        circle2.dataset.vx = speed1 * Math.cos(angle + Math.PI); 
+        circle2.dataset.vy = speed1 * Math.sin(angle + Math.PI); 
     }
 }
 </script>
